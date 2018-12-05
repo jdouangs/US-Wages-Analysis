@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Labor Analysis</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+
+    <style>
+        #map-id { width: 1100px; height: 500px; }
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="row">
+        <div class="col-md-12 jumbotron text-center">
+            <h1>Average Hourly Wages in the United States</h1>
+            <p>Use the interactive charts below to explore the dataset</p>
+        </div>
+        </div>
+    
+    <section class="posts">
+    <article class="post">
+        <h3>Summary/Objective</h3>
+        <p>The purpose of the project was to observe average hourly earnings data sourced from the U.S. <a href="http://www.bls.gov">Bureau of Labor Statistics </a> and to determine
+            if there were any identifiable trends across different types of industries based off of region or year. Our objective was also to determine if any key historical economic events 
+            in the past decade had any impact on or coincided with the observed trends. Definitions for each industry can be found at the bottom of the page.
+        </p>
+    </article>
+
+    <article class="post">
+            <h3>Process</h3>
+            <p>Below is a quick summary of the steps it took to finalize our project. Each task required a careful review of the js library documentation as well as discussion among team members in order to fully
+                customize each js libarary so that we created the necessary files to properly present the data.
+            </p>
+            
+            <ol>
+                <li>Determining and retrieving the raw data set</li>
+                <li>Cleaning and merging the raw data set</li>
+                <li>Analyzing the clean data to determine average hourly values, then converting the average hourly values into a json variable</li>
+                <li>Integrating the dataset into the following visualizations:
+                    <ol type="i">
+                    <li>Choropleth via <a href="https://leafletjs.com/examples/choropleth/">Leaflet.js</a></li>
+                    <li>Bar Graph and Layered Line Chart via <a href="https://plot.ly/javascript/">Plotly.js</a></li>
+                    </ol>
+                </li>
+                <li>Researching and gathering information regarding key U.S. historical events that have had an impact on the economy</li>
+                <li>Inputting the data points into a timeline via <a href="http://visjs.org/docs/timeline/">Vis.js</a></li>
+                <li>Using the Flask API to display our data on a page</li>
+                <li>Preparing the HTML/CSS files for appearance and aesthetics</li>
+            </ol>
+    </article>
+
+    <article class="post">
+            <h3>Analysis of Each Industry by State in 2017</h3>
+            <p>An analysis of the choropleth maps reveals the following insights for each industry in 2017:
+            </p>
+            <ul>
+                <li><b>Construction</b> average hourly wages were higher ($35+) in NY, IL, NJ, MA and AL compared to other states. Areas that had the lowest wages ($20-$25) in the industry were the U.S. South, VT, MA, ID and NM.</li>
+                <li>The states with the highest average hourly wages in the <b>Finance</b> industry were CA, IL, MN as well as the Northeast region of the U.S.</li>
+                <li>Although there is no data for most states, average hourly wages appear to be the highest for the <b>Information</b> sector in the East and West Coast regions of the U.S. The map also displays wage ranges of $30-$34 in IL, MI, PA, TN, and UT.</li>
+                <li>Although <b>Leisure and Hospitality</b> has the lowest average hourly earnings, states on the East and West Coasts still had higher values compared to the rest of the U.S.</li>
+                <li>Average hourly wages appear to be evenly distributed for the <b>Manufacturing</b>, <b>Professional Services</b>, and <b>Trade</b> Sectors. Wages are slightly higher for Manufacturing in the Southern/Midwest region, and WA appearing to be the highest paying state. CA, NY, VA, WA, MA, and CT are the highest paying states for Professional Services.</li>
+            </ul>
+    </article>
+  
+    <div class = "row">
+        <div class = "col-md-12">
+            <div id="map-id"></div>
+            <script src="{{ url_for('static', filename='js/industries.js') }}"></script>
+
+        </div>
+    </div>
+
+    <article class="post">
+            <h3>Analysis of Each Industry Over the Period 2008 - 2018</h3>
+            <p>
+             With average hourly wages adjusted for inflation, wages experienced a slight decrease from 2009 to 2013 and then increased from 2014 to 2017 for all industries except Information. A slight decrease in wages is shown among all industries from 2017 to 2018. Overall, the increases/decreases were minimal and displayed stagnant wage growth from 2009 to 2018.  The Mining & Logging Industry showed a more drastic pattern where average hourly wages decreased from 2009 to 2011 and then increased for subsequent years before flattening out in 2014 and then decreasing from 2015 onwards. The Information sector showed positive wage growth on an annual basis before displaying a slight decrease from 2017 to 2018.
+            </p>
+    </article>
+    
+    <div class ="row">
+        <div class = "col-md-11">
+            <div id = "line_plot"></div>
+        </div>
+    </div>
+
+    <article class="post">
+            <h3>Annual Comparison of Industries</h3>
+            <p>
+                When comparing industries against each other for an annual time period, not much change was shown among each industry as the Information sector still remained the highest paying industry on an average hourly basis. Leisure & Hospitality remained the lowest paying sector on an average hourly basis and amounting to less than half of what the average is for the Information sector ($12.55 vs. $29.85). Although there hasn't been drastic changes year-over-year, there has been a move forward for the Financial industry and Profession & Business Services. The Financial industry has moved from the fourth highest paying industry on an average hourly basis in 2008 to the second highest paying in 2018. 
+            </p>
+    </article>
+
+    <div class ="row">
+        <div class = "col-md-12">
+            <div id = "bar_plot"></div>
+            <select id="selDataset" onchange="getData(this.value)">
+                <option value="2008">2008</option>
+                <option value="2009">2009</option>
+                <option value="2010">2010</option>
+                <option value="2011">2011</option>
+                <option value="2012">2012</option>
+                <option value="2013">2013</option>
+                <option value="2014">2014</option>
+                <option value="2015">2015</option>
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+              </select>
+        </div>
+    </div>
+
+    <article class="post">
+            <h3>Timeline of Key Events</h3>
+            <p>
+                Over 2 million jobs were lost in 2009 after therecession. The Fed reports that U.S. families on average lost 18% of their wealth. The unemployment rate hit 10% in 2009. In July 2014, Seattle raised its minimum wage to $15/hr, making it the city with the highest minimum wage in the U.S. This event may help in explaining why WA tends to have high average hourly earnings in many of the industries examined on the choropleth maps such as Information, Leisure, Manufacturing, and Professional Services. In 2014, the federal minimum wage increased from $7.25 to $10.10. Unemployment was at 5% in November 2015, making it the lowest before the Great Recession. President Donald Trump's executive orders during 2017 were themed around a push for trade and a preference for utilization of oil and fossil fuels.
+            </p>
+    </article>
+
+    <div class="row">
+        <div class="col-md-12"></div>
+        <div id="visualization">
+                <div class="menu">
+                    <input type="button" id="zoomIn" value="Zoom in"/>
+                    <input type="button" id="zoomOut" value="Zoom out"/>
+                    <input type="button" id="moveLeft" value="Move left"/>
+                    <input type="button" id="moveRight" value="Move right"/>
+                    <input type="button" id="2008" value="2008"/>
+                    <input type="button" id="2009" value="2009"/>
+                    <input type="button" id="2010" value="2010"/>
+                    <input type="button" id="2011" value="2011"/>
+                    <input type="button" id="2012" value="2012"/>
+                    <input type="button" id="2013" value="2013"/>
+                    <input type="button" id="2014" value="2014"/>
+                    <input type="button" id="2015" value="2015"/>
+                    <input type="button" id="2016" value="2016"/>
+                    <input type="button" id="2017" value="2017"/>
+                    <input type="button" id="2018" value="2018"/>
+                </div> 
+            </div>
+        </div>
+
+    <article class="post">
+            <h3>Conclusion</h3>
+            <p>
+                In conclusion, average hourly wages in 2017 tended to be higher on the West Coast and Northeast regions of the U.S. plus Illinois for most industries while the trade industry had a more even distribution across states. From an overall standpoint 2008–2018, average hourly wages in the United States have tended to decrease among all sectors except Information during and after the Recession only to change course and increase over time around 2014 to 2018. This is around the same time the federal government raised its minimum wage by approximately $3 and 20 states followed suit in wage increases. Wages may have been impacted by recession and post-recession periods when adjusted for inflation, and government decision may have possibly had an impact on determining the hourly averagely hour wages for each year.            
+            </p>
+    </article>
+
+    <article class="post">
+            <h3>Definitions of Each Industry</h3>
+            <p>
+                <strong>Construction:</strong> comprises establishments primarily engaged in the construction of buildings or engineering projects (e.g., highways and utility systems). Establishments primarily engaged in the preparation of sites for new construction and establishments primarily engaged in subdividing land for sale as building sites also are included in this sector.
+            </p>
+
+            <p>
+                <strong>Financial Activities:</strong> The Finance and Insurance sector comprises establishments primarily engaged in financial transactions (transactions involving the creation, liquidation, or change in ownership of financial assets) and/or in facilitating financial transactions.The Real Estate and Rental and Leasing sector comprises establishments primarily engaged in renting, leasing, or otherwise allowing the use of tangible or intangible assets, and establishments providing related services. The major portion of this sector comprises establishments that rent, lease, or otherwise allow the use of their own assets by others. The assets may be tangible, as is the case of real estate and equipment, or intangible, as is the case with patents and trademarks.
+            </p>
+
+            <p>
+                <strong>Information:</strong> comprises establishments engaged in the following processes: (a) producing and distributing information and cultural products, (b) providing the means to transmit or distribute these products as well as data or communications, and (c) processing data.
+            </p>
+
+            <p>
+                <strong>Leisure and Hospitality:</strong> The Arts, Entertainment, and Recreation sector includes a wide range of establishments that operate facilities or provide services to meet varied cultural, entertainment, and recreational interests of their patrons. This sector comprises (1) establishments that are involved in producing, promoting, or participating in live performances, events, or exhibits intended for public viewing; (2) establishments that preserve and exhibit objects and sites of historical, cultural, or educational interest; and (3) establishments that operate facilities or provide services that enable patrons to participate in recreational activities or pursue amusement, hobby, and leisure-time interests.The Accommodation and Food Services sector comprises establishments providing customers with lodging and/or preparing meals, snacks, and beverages for immediate consumption. The sector includes both accommodation and food services establishments because the two activities are often combined at the same establishment.
+            </p>
+
+            <p>
+                <strong>Manufacturing:</strong> comprises establishments engaged in the mechanical, physical, or chemical transformation of materials, substances, or components into new products.
+            </p>
+            
+            <p>
+                <strong>Mining:</strong> subsector primarily engage in mining, mine site development, and beneficiating (i.e., preparing) metallic minerals and nonmetallic minerals, including coal. The term "mining" is used in the broad sense to include ore extraction, quarrying, and beneficiating (e.g., crushing, screening, washing, sizing, concentrating, and flotation), customarily done at the mine site.
+            </p>
+
+            <p>
+                <strong>Professional and Business Services:</strong> The Professional, Scientific, and Technical Services sector comprises establishments that specialize in performing professional, scientific, and technical activities for others. These activities require a high degree of expertise and training. The establishments in this sector specialize according to expertise and provide these services to clients in a variety of industries and, in some cases, to households.The Management of Companies and Enterprises sector comprises (1) establishments that hold the securities of (or other equity interests in) companies and enterprises for the purpose of owning a controlling interest or influencing management decisions or (2) establishments (except government establishments) that administer, oversee, and manage establishments of the company or enterprise and that normally undertake the strategic or organizational planning and decision making role of the company or enterprise. Establishments that administer, oversee, and manage may hold the securities of the company or enterprise. The Administrative and Support and Waste Management and Remediation Services sector comprises establishments performing routine support activities for the day-to-day operations of other organizations. These essential activities are often undertaken in-house by establishments in many sectors of the economy. The establishments in this sector specialize in one or more of these support activities and provide these services to clients in a variety of industries and, in some cases, to households.
+            </p>
+
+            <p>
+                <strong>Trade, Transportation, and Utilities:</strong> The Wholesale Trade sector comprises establishments engaged in wholesaling merchandise, generally without transformation, and rendering services incidental to the sale of merchandise. The merchandise described in this sector includes the outputs of agriculture, mining, manufacturing, and certain information industries, such as publishing.The Retail Trade sector comprises establishments engaged in retailing merchandise, generally without transformation, and rendering services incidental to the sale of merchandise. The Transportation and Warehousing sector includes industries providing transportation of passengers and cargo, warehousing and storage for goods, scenic and sightseeing transportation, and support activities related to modes of transportation.The Utilities sector comprises establishments engaged in the provision of the following utility services: electric power, natural gas, steam supply, water supply, and sewage removal.
+            </p>
+
+            <p>
+                <strong>Other:</strong> comprises establishments engaged in providing services not specifically provided for elsewhere in the classification system. Establishments in this sector are primarily engaged in activities, such as equipment and machinery repairing, promoting or administering religious activities, grantmaking, advocacy, and providing drycleaning and laundry services, personal care services, death care services, pet care services, photofinishing services, temporary parking services, and dating services.
+            </p>
+
+    </article>
+
+    </section>
+        <script src="{{ url_for('static', filename='js/config.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/data.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bar.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/line.js') }}"></script>
+    
+        <script src="{{ url_for('static', filename='js/leaflet.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/leaflet.map') }}"></script>
+
+        <script src="{{ url_for('static', filename='js/choropleth.js') }}"></script>
+
+
+        <script src="{{ url_for('static', filename='js/timeline.js') }}"></script>
+
+
+
+</body>
+
+</html>
